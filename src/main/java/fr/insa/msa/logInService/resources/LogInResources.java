@@ -22,36 +22,16 @@ import fr.insa.msa.logInService.models.User;
 @RequestMapping("/login")
 public class LogInResources {
 	
-	@Value("${db.url}")
-	private String dbUrl;
-	
-	@Value("${db.username}")
-	private String dbUsername;
-	
-	@Value("${db.password}")
-	private String dbPassword;
-	
-	@GetMapping("/dbUrl")
-	public String getDbUrl() {
-		return dbUrl;
-	}
-	
-	@GetMapping("/dbUsername")
-	public String getDbUsername() {
-		return dbUsername;
-	}
-	
-	@GetMapping("/dbPassword")
-	public String getDbPassword() {
-		return dbPassword;
-	}
+	private String dbUrl = "jdbc:mysql://srv-bdens.insa-toulouse.fr:3306/projet_gei_067";
+	private String dbUsername = "projet_gei_067";
+	private String dbPassword = "Cho7ugai";
 	
 	@GetMapping("/{email}+{password}")
 	public User getUser(@PathVariable("email") String email, @PathVariable("password") String pwd) {
 		
 		// Get the user from the database based on email and password
 		try {
-			Connection connection = DriverManager.getConnection(getDbUrl(), getDbUsername(), getDbPassword());
+			Connection connection = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
 			Statement stmt = connection.createStatement(); 
 			ResultSet rs = stmt.executeQuery("SELECT * FROM Users;");
 			
