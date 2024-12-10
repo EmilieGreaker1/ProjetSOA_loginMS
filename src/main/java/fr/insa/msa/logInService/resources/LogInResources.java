@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -47,5 +47,33 @@ public class LogInResources {
 		}
 
 		return null;
+	}
+	
+	@GetMapping("/allUsers")
+	public List<User> getAllUser() {
+		
+		List<User> users = new ArrayList<>();
+		// Get all users from the database
+		try {
+			Connection connection = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
+			Statement stmt = connection.createStatement(); 
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Users;");
+			
+			while(rs.next()) {
+				users.add(new User(rs.getInt(1), rs.getString(7), rs.getString(2), rs.getString(5), rs.getString(6), rs.getString(3), rs.getString(4)));
+			}
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return users;
+	}
+	
+	@GetMapping("/coolAPI")
+	public String getTest() {
+
+		return "This is a very cool API endpoint, that works!";
 	}
 }
